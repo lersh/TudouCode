@@ -34,7 +34,7 @@ for (var n = 0; n < testStr.length; n++ , j++) {
 var data = buff.slice(0, j);
 console.dir(data);
 
-var decipher = crypto.createDecipheriv('aes-128-ecb', key, vector);
+var decipher = crypto.createDecipheriv('aes-256-cbc', key, vector);
 decipher.update(data);
 var decoded = decipher.final();
 console.log(decoded);
