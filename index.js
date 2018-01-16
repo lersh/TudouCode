@@ -1,4 +1,5 @@
 'use strict'
+var iconv = require('iconv-lite');
 var crypto = require('crypto');
 var key = 'XDXDtudou@KeyFansClub^_^Encode!!';
 var vector = 'Potato@Key@_@=_=';
@@ -13,26 +14,29 @@ var TudouChar = [
     '藐', '耨', '得', '依', '諸', '世', '槃', '涅', '竟', '究', '想', '夢', '倒', '顛', '離', '遠',
     '怖', '恐', '有', '礙', '心', '所', '以', '亦', '智', '道', '。', '集', '盡', '死', '老', '至'
 ];
-var testStr = '陀呐真梵南諳呼呐世離缽集離道寫梵切佛他怯孕究亦';
+var testStr = '世皤大都怛利侄藝呐勝諳若漫冥明漫娑多奢殿闍勝明諳摩奢。侄寫喝諦曰侄耶上哆寫特冥跋奢吉梵耶栗俱耨奢曰蘇若羯諳都楞醯奢楞倒倒缽。冥尼佛俱波槃顛';
 var buff = new Buffer(testStr.length);
-for (var n = 0, j = 0; n < testStr.length; n++ , j++) {
+var j = 0;
+for (var n = 0; n < testStr.length; n++ , j++) {
     if (TudouKeyWord.indexOf(testStr[n]) >= 0) {
         var char = TudouChar.indexOf(testStr[n + 1]);
         buff[j] = char ^ 128;
         n++;
+        //console.log(`${n - 1}:128`);
+        //console.log(`${n}:${char}`);
     }
     else {
         buff[j] = TudouChar.indexOf(testStr[n]);
+        //console.log(`${n}:${buff[j]}`);
     }
 }
-console.dir(buff);
-var data = buff.slice(0, buff.indexOf(0));
+//console.dir(buff);
+var data = buff.slice(0, j);
 console.dir(data);
 
-var decipher = crypto.createDecipheriv('aes-256-cbc', key, vector);
+var decipher = crypto.createDecipheriv('aes-128-ecb', key, vector);
 decipher.update(data);
 var decoded = decipher.final();
+console.log(decoded);
 
-var dataBuff = new Buffer(decoded);
-console.dir(dataBuff);
-console.log(dataBuff.toString('unicode'));
+console.log(iconv.decode(decoded, 'gbk'));
