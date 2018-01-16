@@ -1,4 +1,7 @@
 'use strict'
+var crypto = require('crypto');
+var key = 'XDXDtudou@KeyFansClub^_^Encode!!';
+var vector = 'Potato@Key@_@=_=';
 var TudouKeyWord = ['冥', '奢', '梵', '呐', '俱', '哆', '怯', '諳', '罰', '侄', '缽', '皤'];
 var TudouChar = [
     '滅', '苦', '婆', '娑', '耶', '陀', '跋', '多', '漫', '都', '殿', '悉', '夜', '爍', '帝', '吉',
@@ -10,7 +13,7 @@ var TudouChar = [
     '藐', '耨', '得', '依', '諸', '世', '槃', '涅', '竟', '究', '想', '夢', '倒', '顛', '離', '遠',
     '怖', '恐', '有', '礙', '心', '所', '以', '亦', '智', '道', '。', '集', '盡', '死', '老', '至'
 ];
-var testStr = '俱神怯所諳尼諳。勝波隸哆醯咒哆帝倒侄悉彌佛故都';
+var testStr = '陀呐真梵南諳呼呐世離缽集離道寫梵切佛他怯孕究亦';
 var buff = new Buffer(testStr.length);
 for (var n = 0, j = 0; n < testStr.length; n++ , j++) {
     if (TudouKeyWord.indexOf(testStr[n]) >= 0) {
@@ -25,3 +28,11 @@ for (var n = 0, j = 0; n < testStr.length; n++ , j++) {
 console.dir(buff);
 var data = buff.slice(0, buff.indexOf(0));
 console.dir(data);
+
+var decipher = crypto.createDecipheriv('aes-256-cbc', key, vector);
+decipher.update(data);
+var decoded = decipher.final();
+
+var dataBuff = new Buffer(decoded);
+console.dir(dataBuff);
+console.log(dataBuff.toString('unicode'));
