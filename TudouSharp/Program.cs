@@ -1,6 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using SharpCompress;
+using SharpCompress.Archives;
+using SharpCompress.Common;
+using SharpCompress.Writers;
+using SharpCompress.Compressors;
 
 namespace TudouSharp
 {
@@ -37,7 +42,7 @@ namespace TudouSharp
                 archive.AddEntry("default", stream);
 
                 MemoryStream buffStream = new MemoryStream();
-                archive.SaveTo(buffStream);
+                archive.SaveTo(buffStream,new WriterOptions(CompressionType.LZMA));
                 byte[] encodeBuff = AES.AESEncrypt(buffStream.ToArray(), key, vector);
                 string result = String.Empty;
                 char[] TudouChar = new char[] {
