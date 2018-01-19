@@ -1,3 +1,4 @@
 node_modules/*
 TudouSharp/obj/*
 TudouSharp/bin/*
+package-lock.json
