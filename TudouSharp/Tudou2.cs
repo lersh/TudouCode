@@ -9,11 +9,7 @@ namespace TudouSharp
     {
         static string key = "XDXDtudou@KeyFansClub^_^Encode!!";
         static string vector = "Potato@Key@_@=_=";
-
-
-        public static byte[] ToBytes(string TudouString)
-        {
-            char[] TudouChar = new char[] {
+        static char[] TudouChar = new char[] {
             '謹', '穆', '僧', '室', '藝', '瑟', '彌', '提', '蘇', '醯', '盧', '呼', '舍', '參', '沙', '伊',
             '隸', '麼', '遮', '闍', '度', '蒙', '孕', '薩', '夷', '他', '姪', '豆', '特', '逝', '輸', '楞',
             '栗', '寫', '數', '曳', '諦', '羅', '故', '實', '訶', '知', '三', '藐', '耨', '依', '槃', '涅',
@@ -31,6 +27,8 @@ namespace TudouSharp
             '急', '恤', '孤', '憐', '貧', '創', '廟', '宇', '印', '造', '經', '捨', '藥', '施', '茶', '戒',
             '殺', '放', '橋', '路', '矜', '寡', '拔', '困', '粟', '惜', '福', '排', '解', '紛', '捐', '資'
             };
+        public static byte[] ToBytes(string TudouString)
+        {
             List<char> TudouCharList = new List<char>(TudouChar);
 
             byte[] buffer;
@@ -45,6 +43,30 @@ namespace TudouSharp
             }
 
             return buffer;
+        }
+
+        public static string Decode(string EncodeText)
+        {
+            byte[] EncodeBuffer = ToBytes(EncodeText);
+            byte[] DecodeBuffer = AES.AESDecrypt(EncodeBuffer, key, vector);
+            byte[] DecompressBuffer = new byte[] { };
+            DecompressBuffer = Compress.Decompress(DecodeBuffer);
+
+            return Encoding.UTF8.GetString(DecompressBuffer);
+        }
+
+        public static string Encode(string OriginalText)
+        {
+            byte[] OriginalBuffer = Encoding.UTF8.GetBytes(OriginalText);
+            byte[] CompressedBuffer = Compress.CompressZip(OriginalBuffer);
+            byte[] EncodeBuffer = AES.AESEncrypt(CompressedBuffer, key, vector);
+            string EncodeString = String.Empty;
+            foreach (var word in EncodeBuffer)
+            {
+                EncodeString += TudouChar[word];
+            }
+
+            return EncodeString;
         }
     }
 }
