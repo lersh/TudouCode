@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "---\r >与佛论禅",
   "main": "index.js",
-  "dependencies": {
-    "iconv-lite": "^0.4.19"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
